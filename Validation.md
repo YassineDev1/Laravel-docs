@@ -1,5 +1,5 @@
 
-# Laravel Validation
+# Form Validation
 
 Validation in Laravel allows you to ensure that the data entered by users meets specific rules and requirements. Laravel provides a robust and expressive validation system that helps you validate user input and handle validation errors effectively. In this README, we will cover the basics of validation in Laravel.
 
