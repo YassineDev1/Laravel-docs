@@ -167,7 +167,7 @@ Route::controller(UsersController::class)->group(function () {
 
 ### to_route() helper function
 
-Laravel 9 provides shorter version of `response()->route()`, take a look on the following code:
+Laravel 9 provides shorter version of `redirect()->route()`, take a look on the following code:
 
 ```php
 // Old way
