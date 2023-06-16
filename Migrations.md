@@ -10,7 +10,6 @@ Migrations in Laravel provide a convenient way to manage and version your databa
 - [Rolling Back Migrations](#rolling-back-migrations)
 - [Migration Status](#migration-status)
 - [Migration Seeds](#migration-seeds)
-- [Conclusion](#conclusion)
 
 ## Introduction to Migrations
 
