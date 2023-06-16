@@ -1,4 +1,4 @@
-# Laravel Migrations
+# Database Migrations
 
 Migrations in Laravel provide a convenient way to manage and version your database schema. They allow you to create and modify database tables, indexes, and foreign keys in a structured and organized manner. Laravel's migration system makes it easy to collaborate with other developers and keep your database schema in sync across different environments. In this README, we will cover the basics of using migrations in Laravel.
 
