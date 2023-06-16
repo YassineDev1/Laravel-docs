@@ -1,4 +1,4 @@
-# Laravel Controllers
+# Controllers
 
 Controllers in Laravel are responsible for handling HTTP requests and generating responses. They provide a structured way to organize your application's logic and separate it from the routes and views. In this README, we will cover the basics of using controllers in Laravel.
 
