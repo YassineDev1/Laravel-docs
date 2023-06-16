@@ -1,7 +1,91 @@
 # Laravel-docs
-### Blade directive to add true/false conditions
 
-New in Laravel 8.51: `@class` Blade directive to add true/false conditions on whether some CSS class should be added. Read more in [docs](https://laravel.com/docs/8.x/blade#conditional-classes)
+
+##Views
+### There are multiple ways to return a view with variables
+
+```php
+// First way ->with()
+return view('index')
+    ->with('projects', $projects)
+    ->with('tasks', $tasks)
+
+// Second way - as an array
+return view('index', [
+        'projects' => $projects,
+        'tasks' => $tasks
+    ]);
+
+// Third way - the same as second, but with variable
+$data = [
+    'projects' => $projects,
+    'tasks' => $tasks
+];
+return view('index', $data);
+
+// Fourth way - the shortest - compact()
+return view('index', compact('projects', 'tasks'));
+```
+
+##Middleware
+### Pass arguments to middleware
+
+You can pass arguments to your middleware for specific routes by appending ':' followed by the value. For example, I'm enforcing different authentication methods based on the route using a single middleware.
+
+```php
+Route::get('...')->middleware('auth.license');
+Route::get('...')->middleware('auth.license:bearer');
+Route::get('...')->middleware('auth.license:basic');
+```
+
+```php
+class VerifyLicense
+{
+    public function  handle(Request $request, Closure $next, $type = null)
+    {
+        $licenseKey  = match ($type) {
+            'basic'  => $request->getPassword(),
+            'bearer' => $request->bearerToken(),
+            default  => $request->get('key')
+        };
+
+        // Verify license and return response based on the authentication type
+    }
+}
+```
+##Session
+### Get value from session and forget
+
+If you need to grab something from the Laravel session, then forget it immediately, consider using `session()->pull($value)`. It completes both steps for you.
+
+```php
+// Before
+$path = session()->get('before-github-redirect', '/components');
+
+session()->forget('before-github-redirect');
+
+return redirect($path);
+
+// After
+return redirect(session()->pull('before-github-redirect', '/components'))
+```
+
+### Sessions has() vs exists() vs missing()
+
+Do you know about `has`, `exists` and `missing` methods in Laravel session?
+
+```php
+// The has method returns true if the item is present & not null.
+$request->session()->has('key');
+
+// THe exists method returns true if the item ir present, event if its value is null
+$request->session()->exists('key');
+
+// THe missing method returns true if the item is not present or if the item is null
+$request->session()->missing('key');
+```
+##Blade templates
+### Blade directive to add true/false conditions
 
 Before:
 
@@ -30,6 +114,7 @@ Now:
 
 <span class="p-4 text-gray-500 bg-red"></span>
 ```
+##Controllers
 ### Single Action Controllers
 
 If you want to create a controller with just one action, you can use `__invoke()` method and even create "invokable" controller.
@@ -42,7 +127,7 @@ Route::get('user/{id}', ShowProfile::class);
 
 Artisan:
 
-```bash
+```command line
 php artisan make:controller ShowProfile --invokable
 ```
 
@@ -59,3 +144,46 @@ class ShowProfile extends Controller
     }
 }
 ```
+##Routing
+
+### to_route() helper function
+
+Laravel 9 provides shorter version of `response()->route()`, take a look on the following code:
+
+```php
+// Old way
+Route::get('redirectRoute', function() {
+    return redirect()->route('home');
+});
+
+// Post Laravel 9
+Route::get('redirectRoute', function() {
+    return to_route('home');
+});
+
+```
+### Route group within a group
+
+In Routes, you can create a group within a group, assigning a certain middleware only to some URLs in the "parent" group.
+
+```php
+Route::group(['prefix' => 'account', 'as' => 'account.'], function() {
+    Route::get('login', [AccountController::class, 'login']);
+    Route::get('register', [AccountController::class, 'register']);
+    Route::group(['middleware' => 'auth'], function() {
+        Route::get('edit', [AccountController::class, 'edit']);
+    });
+});
+```
+### Query string parameters to Routes
+
+If you pass additional parameters to the route, in the array, those key / value pairs will automatically be added to the generated URL's query string.
+
+```php
+Route::get('user/{id}/profile', function ($id) {
+    //
+})->name('profile');
+
+$url = route('profile', ['id' => 1, 'photos' => 'yes']); // Result: /user/1/profile?photos=yes
+```
+
