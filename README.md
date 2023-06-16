@@ -16,7 +16,7 @@ To help you navigate through the documentation, here's an overview of the topics
 - [Database Migrations](Migrations.md): Learn how to manage database schema changes efficiently using Laravel's migration system.
 - [Eloquent Relationships](Eloquent_Relationships.md): Master the art of defining and managing relationships between database tables using Eloquent.
 - [Query Builder](Query_Builder.md): Explore the query builder to construct complex database queries in a fluent and intuitive way.
-- - [Eloquent Relationships](Eloquent_Relationships.md): Learn how to define and manage relationships between database tables using Eloquent.
+- [Querying Relationships](Querying_Relationships.md): Master the art of querying and retrieving related records in your database.
 - [Form Validation](Validation.md): Discover techniques for validating user input and ensuring data integrity in your application.
 - [Middleware](Middleware.md): Gain insights into middleware and learn how to intercept and modify HTTP requests and responses in Laravel.
 - [Authentication](Authentication.md): Learn how to implement user authentication and authorization in your Laravel application.
