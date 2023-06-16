@@ -167,6 +167,124 @@ Route::resources([
     'posts' => PostController::class,
 ]);
 ```
+
+## Validation
+### Stop on First Validation Error
+
+By default, Laravel validation errors will be returned in a list, checking all validation rules. But if you want the process to stop after the first error, use validation rule called `bail`:
+
+```php
+$request->validate([
+    'title' => 'bail|required|unique:posts|max:255',
+    'body' => 'required',
+]);
+```
+
+### Change Default Validation Messages
+
+If you want to change default validation error message for specific field and specific validation rule, just add a `messages()` method into your `FormRequest` class.
+
+```php
+class StoreUserRequest extends FormRequest
+{
+    public function rules()
+    {
+        return ['name' => 'required'];
+    }
+
+    public function messages()
+    {
+        return ['name.required' => 'User name should be real name'];
+    }
+}
+```
+
+### Rules depending on some other conditions
+
+If your rules are dynamic and depend on some other condition, you can create that array of rules on the fly
+
+```php
+    public function store(Request $request)
+    {
+        $validationArray = [
+            'title' => 'required',
+            'company' => 'required',
+            'logo' => 'file|max:2048',
+            'location' => 'required',
+            'apply_link' => 'required|url',
+            'content' => 'required',
+            'payment_method_id' => 'required'
+        ];
+
+        if (!Auth::check()) {
+            $validationArray = array_merge($validationArray, [
+                'email' => 'required|email|unique:users',
+                'password' => 'required|confirmed|min:5',
+                'name' => 'required'
+            ]);
+        }
+        //
+    }
+```
+### Position placeholder in validation messages
+
+In Laravel 9 you can use the :position placeholder in validation messages if you're working with arrays.
+
+This will output: "Please provide an amount for price #2"
+
+```php
+class CreateProductRequest extends FormRequest
+{
+    public function rules(): array
+    {
+        return  [
+            'title' => ['required', 'string'];
+            'description' => ['nullable', 'sometimes', 'string'],
+            'prices' => ['required', 'array'],
+            'prices.*.amount' => ['required', 'numeric'],
+            'prices.*.expired_at' => ['required', 'date'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        'prices.*.amount.required' => 'Please provide an amount for price #:position'
+    }
+}
+```
+
+### Exclude validation value
+
+When you need to validate a field, but don't actually require it for anything e.g. 'accept terms and conditions', make use of the `exclude` rule. That way, the `validated` method won't return it...
+
+```php
+class StoreRequest extends FormRequest
+{
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|string',
+            'email_address' => 'required|email',
+            'terms_and_conditions' => 'required|accepted|exclude',
+        ];
+    }
+```
+
+```php
+class RegistrationController extends Controller
+{
+    public function store(StoreRequest $request)
+    {
+        $payload = $request->validated(); // only name and email
+
+        $user = User::create($payload);
+
+        Auth::login($user);
+
+        return redirect()->route('dashboard');
+    }
+```
+
 ## Middleware
 ### Pass arguments to middleware
 
