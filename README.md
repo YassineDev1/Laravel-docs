@@ -194,6 +194,15 @@ Route::group(['prefix' => 'account', 'as' => 'account.'], function() {
     });
 });
 ```
+### Route view
+
+You can use `Route::view($uri , $bladePage)` to return a view directly, without having to use controller function.
+
+```php
+//this will return home.blade.php view
+Route::view('/home', 'home');
+```
+
 ### Query string parameters to Routes
 
 If you pass additional parameters to the route, in the array, those key / value pairs will automatically be added to the generated URL's query string.
