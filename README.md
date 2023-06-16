@@ -27,63 +27,6 @@ return view('index', $data);
 return view('index', compact('projects', 'tasks'));
 ```
 
-## Middleware
-### Pass arguments to middleware
-
-You can pass arguments to your middleware for specific routes by appending ':' followed by the value. For example, I'm enforcing different authentication methods based on the route using a single middleware.
-
-```php
-Route::get('...')->middleware('auth.license');
-Route::get('...')->middleware('auth.license:bearer');
-Route::get('...')->middleware('auth.license:basic');
-```
-
-```php
-class VerifyLicense
-{
-    public function  handle(Request $request, Closure $next, $type = null)
-    {
-        $licenseKey  = match ($type) {
-            'basic'  => $request->getPassword(),
-            'bearer' => $request->bearerToken(),
-            default  => $request->get('key')
-        };
-
-        // Verify license and return response based on the authentication type
-    }
-}
-```
-## Session
-### Get value from session and forget
-
-If you need to grab something from the Laravel session, then forget it immediately, consider using `session()->pull($value)`. It completes both steps for you.
-
-```php
-// Before
-$path = session()->get('before-github-redirect', '/components');
-
-session()->forget('before-github-redirect');
-
-return redirect($path);
-
-// After
-return redirect(session()->pull('before-github-redirect', '/components'))
-```
-
-### Sessions has() vs exists() vs missing()
-
-Do you know about `has`, `exists` and `missing` methods in Laravel session?
-
-```php
-// The has method returns true if the item is present & not null.
-$request->session()->has('key');
-
-// THe exists method returns true if the item ir present, event if its value is null
-$request->session()->exists('key');
-
-// THe missing method returns true if the item is not present or if the item is null
-$request->session()->missing('key');
-```
 ## Blade templates
 ### Blade directive to add true/false conditions
 
@@ -223,4 +166,61 @@ Route::resources([
     'photos' => PhotoController::class,
     'posts' => PostController::class,
 ]);
+```
+## Middleware
+### Pass arguments to middleware
+
+You can pass arguments to your middleware for specific routes by appending ':' followed by the value. For example, I'm enforcing different authentication methods based on the route using a single middleware.
+
+```php
+Route::get('...')->middleware('auth.license');
+Route::get('...')->middleware('auth.license:bearer');
+Route::get('...')->middleware('auth.license:basic');
+```
+
+```php
+class VerifyLicense
+{
+    public function  handle(Request $request, Closure $next, $type = null)
+    {
+        $licenseKey  = match ($type) {
+            'basic'  => $request->getPassword(),
+            'bearer' => $request->bearerToken(),
+            default  => $request->get('key')
+        };
+
+        // Verify license and return response based on the authentication type
+    }
+}
+```
+## Session
+### Get value from session and forget
+
+If you need to grab something from the Laravel session, then forget it immediately, consider using `session()->pull($value)`. It completes both steps for you.
+
+```php
+// Before
+$path = session()->get('before-github-redirect', '/components');
+
+session()->forget('before-github-redirect');
+
+return redirect($path);
+
+// After
+return redirect(session()->pull('before-github-redirect', '/components'))
+```
+
+### Sessions has() vs exists() vs missing()
+
+Do you know about `has`, `exists` and `missing` methods in Laravel session?
+
+```php
+// The has method returns true if the item is present & not null.
+$request->session()->has('key');
+
+// THe exists method returns true if the item ir present, event if its value is null
+$request->session()->exists('key');
+
+// THe missing method returns true if the item is not present or if the item is null
+$request->session()->missing('key');
 ```
