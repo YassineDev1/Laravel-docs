@@ -19,7 +19,7 @@ To help you navigate through the documentation, here's an overview of the topics
 - [Querying Relationships](Querying_Relationships.md): Master the art of querying and retrieving related records in your database.
 - [Form Validation](Validation.md): Discover techniques for validating user input and ensuring data integrity in your application.
 - [Middleware](Middleware.md): Gain insights into middleware and learn how to intercept and modify HTTP requests and responses in Laravel.
-- [Authentication](Authentication.md): Learn how to implement user authentication and authorization in your Laravel application.
+
 
 Feel free to explore these files in any order that suits your learning needs. Each file provides comprehensive documentation and examples for its corresponding topic.
 
