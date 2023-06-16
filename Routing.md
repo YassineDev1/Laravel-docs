@@ -1,4 +1,4 @@
-# Laravel Routing
+# Routing
 
 Routing in Laravel allows you to define how your application responds to different URLs. It maps URLs to specific actions or controllers that handle the requests. In this README, we will cover the basics of routing in Laravel.
 
