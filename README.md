@@ -144,6 +144,25 @@ class ShowProfile extends Controller
     }
 }
 ```
+
+### Controller groups
+
+Instead of using the controller in each route, consider using a route controller group. Added to Laravel since v8.80
+
+```php
+// Before
+Route::get('users', [UserController::class, 'index']);
+Route::post('users', [UserController::class, 'store']);
+Route::get('users/{user}', [UserController::class, 'show']);
+Route::get('users/{user}/ban', [UserController::class, 'ban']);
+// After
+Route::controller(UsersController::class)->group(function () {
+    Route::get('users', 'index');
+    Route::post('users', 'store');
+    Route::get('users/{user}', 'show');
+    Route::get('users/{user}/ban', 'ban');
+});
+```
 ## Routing
 
 ### to_route() helper function
@@ -186,4 +205,13 @@ Route::get('user/{id}/profile', function ($id) {
 
 $url = route('profile', ['id' => 1, 'photos' => 'yes']); // Result: /user/1/profile?photos=yes
 ```
+### Route resources grouping
 
+If your routes have a lot of resource controllers, you can group them and call one Route::resources() instead of many single Route::resource() statements.
+
+```php
+Route::resources([
+    'photos' => PhotoController::class,
+    'posts' => PostController::class,
+]);
+```
