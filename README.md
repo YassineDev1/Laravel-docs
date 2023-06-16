@@ -1,7 +1,7 @@
 # Laravel-docs
 
 
-##Views
+## Views
 ### There are multiple ways to return a view with variables
 
 ```php
@@ -27,7 +27,7 @@ return view('index', $data);
 return view('index', compact('projects', 'tasks'));
 ```
 
-##Middleware
+## Middleware
 ### Pass arguments to middleware
 
 You can pass arguments to your middleware for specific routes by appending ':' followed by the value. For example, I'm enforcing different authentication methods based on the route using a single middleware.
@@ -53,7 +53,7 @@ class VerifyLicense
     }
 }
 ```
-##Session
+## Session
 ### Get value from session and forget
 
 If you need to grab something from the Laravel session, then forget it immediately, consider using `session()->pull($value)`. It completes both steps for you.
@@ -84,7 +84,7 @@ $request->session()->exists('key');
 // THe missing method returns true if the item is not present or if the item is null
 $request->session()->missing('key');
 ```
-##Blade templates
+## Blade templates
 ### Blade directive to add true/false conditions
 
 Before:
@@ -114,7 +114,7 @@ Now:
 
 <span class="p-4 text-gray-500 bg-red"></span>
 ```
-##Controllers
+## Controllers
 ### Single Action Controllers
 
 If you want to create a controller with just one action, you can use `__invoke()` method and even create "invokable" controller.
@@ -144,7 +144,7 @@ class ShowProfile extends Controller
     }
 }
 ```
-##Routing
+## Routing
 
 ### to_route() helper function
 
