@@ -1,7 +1,4 @@
 
-# Laravel-docs
-
-
 ## Views
 ### There are multiple ways to return a view with variables
 
